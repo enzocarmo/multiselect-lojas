@@ -1,16 +1,18 @@
 export default {
   editor: {
     label: {
-      en: "My Element",
+      en: "MultiSelect Lojas",
     },
   },
   properties: {
-    textColor: {
+    data: {
       label: {
-        en: "Text color",
+        en: "Data",
       },
-      type: "Color",
-      defaultValue: "#F23636",
+      type: "Array",
+      defaultValue: [],
+      bindable: true,
+      section: "Settings"
     },
   },
 };
