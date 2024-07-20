@@ -158,7 +158,7 @@ export default {
   appearance: none;
   background: var(--ms-bg, #fff);
   border: 0;
-  border-radius: var(--ms-radius, 4px);
+  border-radius: var(--ms-radius, 14px);
   bottom: 0;
   box-sizing: border-box;
   font-family: "Montserrat";
