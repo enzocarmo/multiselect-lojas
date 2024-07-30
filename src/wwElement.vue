@@ -14,6 +14,7 @@
 
 <script>
 import Multiselect from "@vueform/multiselect";
+import { ref, watch, onMounted } from "vue";
 
 export default {
   components: { Multiselect },
@@ -30,27 +31,36 @@ export default {
         defaultValue: [],
       });
 
-    return { variableResult, setValue };
-  },
-  watch: {
-    selected(newValue) {
-      this.setValue(newValue);
-    },
-    "content.data": {
-      handler(newData) {
-        if (Array.isArray(newData)) {
-          this.options = newData;
-        } else {
-          this.options = [];
-        }
+    const selected = ref([]);
+    const options = ref([]);
+
+    let internalChange = false;
+
+    watch(variableResult, (newVal) => {
+      if (!internalChange) {
+        selected.value = newVal;
       }
-    }
-  },
-  data() {
-    return {
-      selected: [],
-      options: [],
-    };
+      internalChange = false;
+    }, { immediate: true, deep: true });
+
+    watch(selected, (newVal) => {
+      internalChange = true;
+      setValue(newVal);
+    });
+
+    watch(() => props.content.data, (newData) => {
+      if (Array.isArray(newData)) {
+        options.value = newData;
+      } else {
+        options.value = [];
+      }
+    }, { immediate: true });
+
+    onMounted(() => {
+      selected.value = variableResult.value;
+    });
+
+    return { selected, options };
   },
   methods: {
     customMultipleLabel(value) {
@@ -345,11 +355,11 @@ export default {
 }
 
 .multiselect-clear:hover .multiselect-clear-icon {
-  background-color: var(--ms-clear-color-hover, #6418c3);
+  background-color: var(--ms-clear-color-hover, #6418c3) !important;
 }
 
 .multiselect-clear-icon {
-  background-color: var(--ms-clear-color, #6418c3);
+  background-color: var(--ms-clear-color, #a4a4a4);
   display: inline-block;
   -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20fill='%236418c3'%20viewBox='0%200%20256%20256'%3E%3Cpath%20d='M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm37.66,130.34a8,8,0,0,1-11.32,11.32L128,139.31l-26.34,26.35a8,8,0,0,1-11.32-11.32L116.69,128,90.34,101.66a8,8,0,0,1,11.32-11.32L128,116.69l26.34-26.35a8,8,0,0,1,11.32,11.32L139.31,128Z'%3E%3C/path%3E%3C/svg%3E");
   mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20fill='%236418c3'%20viewBox='0%200%20256%20256'%3E%3Cpath%20d='M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm37.66,130.34a8,8,0,0,1-11.32,11.32L128,139.31l-26.34,26.35a8,8,0,0,1-11.32-11.32L116.69,128,90.34,101.66a8,8,0,0,1,11.32-11.32L128,116.69l26.34-26.35a8,8,0,0,1,11.32,11.32L139.31,128Z'%3E%3C/path%3E%3C/svg%3E");
@@ -358,18 +368,18 @@ export default {
 
 .multiselect-caret,
 .multiselect-clear-icon {
-  height: 24px;
+  height: 20px;
   -webkit-mask-position: center;
   mask-position: center;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   -webkit-mask-size: contain;
   mask-size: contain;
-  width: 24px;
+  width: 20px;
 }
 
 .multiselect-caret {
-  background-color: var(--ms-caret-color, #6418c3);
+  background-color: var(--ms-caret-color, #a4a4a4);
   flex-grow: 0;
   flex-shrink: 0;
   margin: 0 12px 0 0 !important;
