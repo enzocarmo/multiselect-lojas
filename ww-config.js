@@ -15,4 +15,7 @@ export default {
       section: "Settings"
     },
   },
+  triggerEvents: [
+    { name: 'change', label: { en: 'Change' }, event: { value: '' } },
+  ],
 };
