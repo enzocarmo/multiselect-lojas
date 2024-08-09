@@ -23,7 +23,7 @@ export default {
     content: { type: Object, required: true },
     uid: { type: String, required: true },
   },
-  setup(props) {
+  setup(props, { emit }) { // Destructure emit from the setup context
     const { value: variableResult, setValue: setValue } =
       wwLib.wwVariable.useComponentVariable({
         uid: props.uid,
@@ -47,7 +47,7 @@ export default {
     watch(selected, (newVal) => {
       internalChange = true;
       setValue(newVal);
-      this.$emit('trigger-event', { name: 'change', event: { value: newVal } }); // Use emit instead of this.$emit
+      emit('trigger-event', { name: 'change', event: { value: newVal } }); // Use emit instead of this.$emit
     });
 
     watch(() => props.content.data, (newData) => {
