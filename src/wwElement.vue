@@ -47,6 +47,7 @@ export default {
     watch(selected, (newVal) => {
       internalChange = true;
       setValue(newVal);
+      emit('trigger-event', { name: 'change', event: { value: newVal } }); // Use emit instead of this.$emit
     });
 
     watch(() => props.content.data, (newData) => {
