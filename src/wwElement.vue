@@ -9,6 +9,7 @@
     :close-on-select="false"
     :hideSelected="false"
     :multiple-label="customMultipleLabel"
+    :required="this.content.required"
     noOptionsText="Nenhuma opção disponível..."
   />
 </template>
